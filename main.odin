@@ -1,42 +1,43 @@
 package main
 
 import "core:fmt"
-import rl "vendor:raylib"
+import "vendor:raylib"
 import "timer"
 import "spritesheet"
+import "spritesheetanimation"
 import "entity"
 import "animation"
 
-
-
 main :: proc() {
+  using raylib
+  using spritesheetanimation
+
   fmt.println("Hello world!")
 
   shouldExit := false
 
   f := entity.new_entity(entity.Fish)
 
-  rl.InitWindow(800, 600, "example")
-  defer rl.CloseWindow()
+  InitWindow(800, 600, "example")
+  defer CloseWindow()
 
-  baad := spritesheet.create(texture=rl.LoadTexture("assets/baad.png"), frameWidth=90, frameHeight=55, rows=12, columns=2)
-  defer rl.UnloadTexture(baad.texture)
+  sp := load(sheetFilePath="assets/baad.png", frameWidth=90, frameHeight=55, rows=12, columns=2)
+  defer unload(&sp)
 
-  ani := animation.create(0, 11)
+  add_animation(&sp, "sailing", 5, 11, .2)
+  add_animation(&sp, "start_sailing", 1, 5, .2)
 
-  rl.SetTargetFPS(60)
+  SetTargetFPS(60)
 
   for !shouldExit {
-    if (rl.IsKeyPressed(rl.KeyboardKey.ESCAPE)) {
+    if (IsKeyPressed(KeyboardKey.ESCAPE)) {
       shouldExit = true;
     }
 
-    r := animation.loop_forward(&ani, 1.0 / 10.0)
-
-    rl.BeginDrawing()
-    rl.ClearBackground(rl.BLUE)
-    spritesheet.render_cutout(sheet=&baad, position=rl.Vector2{0,0}, col=1, row=r)
-    rl.EndDrawing()
+    BeginDrawing()
+    ClearBackground(BLUE)
+    spritesheet.render_cutout(sheet=&sp, position=Vector2{0,0}, col=1, row=loop_forward(&sp, "sailing"))
+    EndDrawing()
   }
 
 }

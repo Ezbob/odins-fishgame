@@ -8,12 +8,6 @@ Entity :: struct {
   variant: union {^Fish},
 }
 
-Fish :: struct {
-  using entity: Entity,
-  position: rl.Vector2,
-  velocity: rl.Vector2,
-}
-
 @(private)
 next_id: u64 = 0
 

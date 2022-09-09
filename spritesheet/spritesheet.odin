@@ -7,6 +7,20 @@ SpriteSheet :: struct {
   frameWidth, frameHeight, columns, rows: int,
 }
 
+load :: proc(filepath: cstring, frameWidth: int, frameHeight: int, columns: int, rows: int) -> SpriteSheet {
+  sp := SpriteSheet{}
+  sp.texture = rl.LoadTexture(filepath)
+  sp.frameWidth = frameWidth
+  sp.frameHeight = frameHeight
+  sp.columns = columns
+  sp.rows = rows
+  return sp
+}
+
+unload :: proc(sp: ^SpriteSheet) {
+  rl.UnloadTexture(sp.texture)
+}
+
 create :: proc(texture: rl.Texture, frameWidth: int, frameHeight: int, columns: int, rows: int) -> SpriteSheet {
   return SpriteSheet {
     texture=texture,
