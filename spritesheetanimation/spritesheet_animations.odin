@@ -25,14 +25,14 @@ create :: proc(sheet: spritesheet.SpriteSheet) -> SpriteSheetAnimations {
   }
 }
 
-add_animation :: proc(spa: ^SpriteSheetAnimations, name: string, start: int, end: int, rate: f32) {
-  spa.animations[name] = animation.Anint_create(start, end, rate)
+add_animation :: proc(spa: ^SpriteSheetAnimations, name: string, start: int, end: int) {
+  spa.animations[name] = animation.Anint_create(start, end)
 }
 
-loop_forward :: proc(spa: ^SpriteSheetAnimations, name: string) -> int {
-  return animation.Anint_loop_forward(&spa.animations[name])
+loop_forward :: proc(spa: ^SpriteSheetAnimations, name: string, rate: f32) -> int {
+  return animation.Anint_loop_forward(&spa.animations[name], rate)
 }
 
-loop_backward :: proc(spa: ^SpriteSheetAnimations, name: string) -> int {
-  return animation.Anint_loop_backward(&spa.animations[name])
+loop_backward :: proc(spa: ^SpriteSheetAnimations, name: string, rate: f32) -> int {
+  return animation.Anint_loop_backward(&spa.animations[name], rate)
 }

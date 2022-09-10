@@ -4,13 +4,12 @@ import "core:fmt"
 import "vendor:raylib"
 import "timer"
 import "spritesheet"
-import "spritesheetanimation"
+import spa "spritesheetanimation"
 import "entity"
 import "animation"
 
 main :: proc() {
   using raylib
-  using spritesheetanimation
 
   fmt.println("Hello world!")
 
@@ -21,11 +20,11 @@ main :: proc() {
   InitWindow(800, 600, "example")
   defer CloseWindow()
 
-  sp := load(sheetFilePath="assets/baad.png", frameWidth=90, frameHeight=55, rows=12, columns=2)
-  defer unload(&sp)
+  sp := spa.load(sheetFilePath="assets/baad.png", frameWidth=90, frameHeight=55, rows=12, columns=2)
+  defer spa.unload(&sp)
 
-  add_animation(&sp, "sailing", 5, 11, .2)
-  add_animation(&sp, "start_sailing", 1, 5, .2)
+  spa.add_animation(&sp, "sailing", 5, 11)
+  spa.add_animation(&sp, "start_sailing", 1, 5)
 
   SetTargetFPS(60)
 
@@ -36,7 +35,7 @@ main :: proc() {
 
     BeginDrawing()
     ClearBackground(BLUE)
-    spritesheet.render_cutout(sheet=&sp, position=Vector2{0,0}, col=1, row=loop_forward(&sp, "sailing"))
+    spritesheet.render_cutout(sheet=&sp, position=Vector2{0,0}, col=1, row=spa.loop_forward(&sp, "sailing", 0.2))
     EndDrawing()
   }
 
