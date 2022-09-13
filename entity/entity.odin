@@ -4,7 +4,6 @@ import rl "vendor:raylib"
 
 Entity :: struct {
   id: u64,
-  name: string,
   variant: union {^Fish, ^Player},
 }
 
