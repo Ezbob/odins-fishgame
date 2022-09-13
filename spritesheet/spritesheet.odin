@@ -41,6 +41,6 @@ render_cutout :: proc(
       height = f32(sheet.frameHeight),
     },
     position,
-    color
+    color,
   )
 }

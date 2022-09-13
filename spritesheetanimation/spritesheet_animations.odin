@@ -5,24 +5,19 @@ import "../animation"
 
 SpriteSheetAnimations :: struct {
   using spritesheet: spritesheet.SpriteSheet,
-  animations: map[string]animation.Anint
+  animations: map[string]animation.Anint,
 }
 
 load :: proc(sheetFilePath: cstring, frameWidth: int, frameHeight: int, columns: int, rows: int) -> SpriteSheetAnimations {
-  sp := spritesheet.load(sheetFilePath, frameWidth, frameHeight, columns, rows)
-  return create(sp)
+  return SpriteSheetAnimations {
+    spritesheet = spritesheet.load(sheetFilePath, frameWidth, frameHeight, columns, rows),
+    animations = make(map[string]animation.Anint, 0),
+  }
 }
 
 unload :: proc(sp: ^SpriteSheetAnimations) {
   spritesheet.unload(sp)
   delete(sp.animations)
-}
-
-create :: proc(sheet: spritesheet.SpriteSheet) -> SpriteSheetAnimations {
-  return SpriteSheetAnimations {
-    spritesheet = sheet,
-    animations = make(map[string]animation.Anint, 0)
-  }
 }
 
 add_animation :: proc(spa: ^SpriteSheetAnimations, name: string, start: int, end: int) {

@@ -1,9 +1,18 @@
 package entity
 
 import rl "vendor:raylib"
+import "../components"
 
 Fish :: struct {
   using entity: Entity,
-  position: rl.Vector2,
-  velocity: rl.Vector2,
+  using movable: components.Movable,
+  color: rl.Color,
+}
+
+Fish_update :: proc(f: ^Fish) {
+  f.position += (f.velocity * rl.GetFrameTime())
+}
+
+Fish_render :: proc(f: ^Fish) {
+  
 }

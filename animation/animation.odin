@@ -4,7 +4,7 @@ import "../timer"
 
 Anint :: struct {
   timer: timer.Timer,
-  seqMin, seqMax, accumulator: int
+  seqMin, seqMax, accumulator: int,
 }
 
 Anint_create :: proc(seqMin: int, seqMax: int) -> Anint {

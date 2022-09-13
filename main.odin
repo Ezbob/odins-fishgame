@@ -15,7 +15,10 @@ main :: proc() {
 
   shouldExit := false
 
+  entities: [dynamic]entity.Entity
+
   f := entity.new_entity(entity.Fish)
+  f.velocity.x = 10.0;
 
   InitWindow(800, 600, "example")
   defer CloseWindow()
@@ -26,6 +29,12 @@ main :: proc() {
   spa.add_animation(&sp, "sailing", 5, 11)
   spa.add_animation(&sp, "start_sailing", 1, 5)
 
+  p := entity.new_entity(entity.Player)
+  p.animation = &sp
+  p.velocity.x = 20.0;
+
+  append(&entities, p)
+
   SetTargetFPS(60)
 
   for !shouldExit {
@@ -33,9 +42,15 @@ main :: proc() {
       shouldExit = true;
     }
 
+    for _, i in entities {
+      entity.update(&entities[i])
+    }
+
     BeginDrawing()
     ClearBackground(BLUE)
-    spritesheet.render_cutout(sheet=&sp, position=Vector2{0,0}, col=1, row=spa.loop_forward(&sp, "sailing", 0.2))
+    for _, i in entities {
+      entity.render(&entities[i])
+    }
     EndDrawing()
   }
 
