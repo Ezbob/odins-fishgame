@@ -4,47 +4,33 @@ import rl "vendor:raylib"
 
 KeyBindings :: map[Actions]rl.KeyboardKey
 
-DefaultKeyBoardInputDevice := InputDevice {
-  bindings = map[Actions]rl.KeyboardKey {
-    Actions.LEFT = rl.KeyboardKey.LEFT,
-    Actions.RIGHT = rl.KeyboardKey.RIGHT,
-    Actions.UP = rl.KeyboardKey.UP,
-    Actions.DOWN = rl.KeyboardKey.DOWN,
-  },
+DefaultKeyBindings := map[Actions]rl.KeyboardKey {
+  Actions.LEFT = rl.KeyboardKey.LEFT,
+  Actions.RIGHT = rl.KeyboardKey.RIGHT,
+  Actions.UP = rl.KeyboardKey.UP,
+  Actions.DOWN = rl.KeyboardKey.DOWN,
 }
 
-KeyBoard_isPressed :: proc(inp: ^InputDevice, action: Actions) -> bool {
-  switch binding in inp.bindings {
-    case KeyBindings:
-      val, ok := binding[action]
-      if !ok {
-        return false
-      }
-      return rl.IsKeyPressed(val)
+KeyBoard_isPressed :: proc(binding: ^KeyBindings, action: Actions) -> bool {
+  val, ok := binding[action]
+  if !ok {
+    return false
   }
-  return false
+  return rl.IsKeyPressed(val)
 }
 
-KeyBoard_isDown :: proc(inp: ^InputDevice, action: Actions) -> bool {
-  switch binding in inp.bindings {
-    case KeyBindings:
-      val, ok := binding[action]
-      if !ok {
-        return false
-      }
-      return rl.IsKeyDown(val)
+KeyBoard_isDown :: proc(binding: ^KeyBindings, action: Actions) -> bool {
+  val, ok := binding[action]
+  if !ok {
+    return false
   }
-  return false
+  return rl.IsKeyDown(val)
 }
 
-KeyBoard_isReleased :: proc(inp: ^InputDevice, action: Actions) -> bool {
-  switch binding in inp.bindings {
-    case KeyBindings:
-      val, ok := binding[action]
-      if !ok {
-        return false
-      }
-      return rl.IsKeyReleased(val)
+KeyBoard_isReleased :: proc(binding: ^KeyBindings, action: Actions) -> bool {
+  val, ok := binding[action]
+  if !ok {
+    return false
   }
-  return false
+  return rl.IsKeyReleased(val)
 }

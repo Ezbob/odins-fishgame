@@ -9,11 +9,29 @@ Actions :: enum {
 }
 
 InputDevice :: struct {
-  bindings: union {KeyBindings},
+  bindings: union {^KeyBindings},
 }
 
-isPressed :: proc{KeyBoard_isPressed}
+isPressed :: proc(inp: ^InputDevice, action: Actions) -> bool {
+  switch binding in inp.bindings {
+    case ^KeyBindings:
+      return KeyBoard_isPressed(binding, action)
+  }
+  return false
+}
 
-isDown :: proc{KeyBoard_isDown}
+isDown :: proc(inp: ^InputDevice, action: Actions) -> bool {
+  switch binding in inp.bindings {
+    case ^KeyBindings:
+      return KeyBoard_isDown(binding, action)
+  }
+  return false
+}
 
-isReleased :: proc{KeyBoard_isReleased}
+isReleased :: proc(inp: ^InputDevice, action: Actions) -> bool {
+  switch binding in inp.bindings {
+    case ^KeyBindings:
+      return KeyBoard_isReleased(binding, action)
+  }
+  return false
+}

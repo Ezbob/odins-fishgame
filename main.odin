@@ -30,9 +30,13 @@ main :: proc() {
   spa.add_animation(&sp, "sailing", 5, 11)
   spa.add_animation(&sp, "start_sailing", 1, 5)
 
+  keyBoardInputDevice := control.InputDevice {
+    bindings = &control.DefaultKeyBindings,
+  }
+
   player_shared := entity.Player_Shared {
     animation = sp,
-    input = &control.DefaultKeyBoardInputDevice,
+    input = &keyBoardInputDevice,
   }
 
   p := entity.new_entity(entity.Player)
