@@ -11,6 +11,10 @@ DefaultKeyBindings := map[Actions]rl.KeyboardKey {
   Actions.DOWN = rl.KeyboardKey.DOWN,
 }
 
+DefaultKeyInputDevice := InputDevice {
+  bindings = &DefaultKeyBindings,
+}
+
 KeyBoard_isPressed :: proc(binding: ^KeyBindings, action: Actions) -> bool {
   val, ok := binding[action]
   if !ok {
