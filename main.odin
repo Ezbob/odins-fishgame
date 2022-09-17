@@ -7,6 +7,7 @@ import "spritesheet"
 import spa "spritesheetanimation"
 import "entity"
 import "animation"
+import "control"
 
 main :: proc() {
   using raylib
@@ -31,11 +32,11 @@ main :: proc() {
 
   player_shared := entity.Player_Shared {
     animation = sp,
+    input = &control.DefaultKeyBoardInputDevice,
   }
 
   p := entity.new_entity(entity.Player)
   p.shared = &player_shared
-  p.velocity.x = 20.0;
 
   append(&entities, p)
 
