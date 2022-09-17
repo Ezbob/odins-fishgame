@@ -29,8 +29,12 @@ main :: proc() {
   spa.add_animation(&sp, "sailing", 5, 11)
   spa.add_animation(&sp, "start_sailing", 1, 5)
 
+  player_shared := entity.Player_Shared {
+    animation = sp,
+  }
+
   p := entity.new_entity(entity.Player)
-  p.animation = &sp
+  p.shared = &player_shared
   p.velocity.x = 20.0;
 
   append(&entities, p)

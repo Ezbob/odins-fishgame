@@ -6,11 +6,15 @@ import "../components"
 import spa "../spritesheetanimation"
 import "../spritesheet"
 
+Player_Shared :: struct {
+  animation: spa.SpriteSheetAnimations,
+}
+
 Player :: struct {
   using entity: Entity,
   using movable: components.Movable,
   color: rl.Color,
-  animation: ^spa.SpriteSheetAnimations,
+  shared: ^Player_Shared,
 }
 
 Player_update :: proc(p: ^Player) {
@@ -20,5 +24,11 @@ Player_update :: proc(p: ^Player) {
 }
 
 Player_render :: proc(p: ^Player) {
-  spritesheet.render_cutout(sheet=p.animation, position=p.position, col=1, row=spa.loop_forward(p.animation, "sailing", 0.2), flipped=true)
+  spritesheet.render_cutout(
+    sheet=&p.shared.animation,
+    position=p.position,
+    col=1,
+    row=spa.loop_forward(&p.shared.animation, "sailing", 0.2),
+    flipped=true,
+  )
 }
