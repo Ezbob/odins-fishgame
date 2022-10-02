@@ -13,7 +13,10 @@ Fish_Random_Movement :: enum u8 {
 	STOP,
 }
 
-Fish_Type :: enum { Cod = 0, Puffer = 1 }
+Fish_Type :: enum {
+	Cod    = 0,
+	Puffer = 1,
+}
 
 Fish_Shared :: struct {
 	weighted_movement: [len(Fish_Random_Movement)]struct {
@@ -33,44 +36,19 @@ Fish :: struct {
 	using movable: components.Movable,
 	color:         rl.Color,
 	shared:        ^Fish_Shared,
+	active:        bool,
 }
 
 cod_fish_shared := Fish_Shared {
 	weighted_movement = [len(Fish_Random_Movement)]struct {
 		type:   Fish_Random_Movement,
 		weight: u8,
-	} {
-		{
+	}{{
 			type = Fish_Random_Movement.UP,
 			weight = 8,
-		},
-		{
-			type = Fish_Random_Movement.DOWN,
-			weight = 12 + 8,
-		},
-		{
-			type = Fish_Random_Movement.RIGHT,
-			weight = 16 + 12 + 8,
-		},
-		{
-			type = Fish_Random_Movement.LEFT,
-			weight = 16 + 16 + 12 + 8,
-		},
-		{
-			type = Fish_Random_Movement.LEFT,
-			weight = 48 + 16 + 16 + 12 + 8,
-		},
-	},
-	swim_force = rl.Vector2 {
-		30,
-		30,
-	},
-	movement_plane = rl.Rectangle {
-		0,
-		120,
-		0,
-		0,
-	},
+		}, {type = Fish_Random_Movement.DOWN, weight = 12 + 8}, {type = Fish_Random_Movement.RIGHT, weight = 16 + 12 + 8}, {type = Fish_Random_Movement.LEFT, weight = 16 + 16 + 12 + 8}, {type = Fish_Random_Movement.LEFT, weight = 48 + 16 + 16 + 12 + 8}},
+	swim_force = rl.Vector2{30, 30},
+	movement_plane = rl.Rectangle{0, 120, 0, 0},
 	value = 100,
 	fish_type = Fish_Type.Cod,
 }
@@ -79,14 +57,14 @@ puffer_fish_shared := cod_fish_shared
 
 Fish_new :: proc(type: Fish_Type) -> ^Fish {
 	switch type {
-		case Fish_Type.Cod:
-			e := new_entity(Fish)
-			e.variant.(^Fish).shared = &cod_fish_shared
-			return e
-		case Fish_Type.Puffer:
-			e := new_entity(Fish)
-			e.variant.(^Fish).shared = &puffer_fish_shared
-			return e
+	case Fish_Type.Cod:
+		e := new_entity(Fish)
+		e.variant.(^Fish).shared = &cod_fish_shared
+		return e
+	case Fish_Type.Puffer:
+		e := new_entity(Fish)
+		e.variant.(^Fish).shared = &puffer_fish_shared
+		return e
 	}
 	return nil
 }
@@ -110,11 +88,22 @@ Fish_deinit_shared :: proc() {
 }
 
 Fish_update :: proc(f: ^Fish) {
+	if (!f.active) {
+		return
+	}
+
 	f.position += (f.velocity * rl.GetFrameTime())
 	f.velocity *= 0.99
-	
+
 }
 
 Fish_render :: proc(f: ^Fish) {
-	spritesheet.render_cutout(&f.shared.animation, f.position, 0, int(f.shared.fish_type), false, f.color)
+	spritesheet.render_cutout(
+		&f.shared.animation,
+		f.position,
+		0,
+		int(f.shared.fish_type),
+		false,
+		f.color,
+	)
 }

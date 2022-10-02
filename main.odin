@@ -22,10 +22,12 @@ main :: proc() {
   defer entity.deinit_shareds()
 
   f := entity.Fish_new(entity.Fish_Type.Cod)
+  f.active = true
   f.color = WHITE
   f.velocity.x = 10.0
 
   f2 := entity.Fish_new(entity.Fish_Type.Puffer)
+  f2.active = true
   f2.color = WHITE
   f2.velocity.x = 10.0
   f2.position.x = 100
