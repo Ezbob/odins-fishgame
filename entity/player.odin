@@ -17,6 +17,29 @@ Player :: struct {
   using movable: components.Movable,
   color: rl.Color,
   shared: ^Player_Shared,
+  playerNumber: uint,
+}
+
+default_player_shared := Player_Shared{
+  input = &control.DefaultKeyInputDevice,
+}
+
+Player_new :: proc(number: uint) -> ^Player {
+  e := new_entity(Player)
+  e.playerNumber = number
+  e.shared = &default_player_shared
+	return e
+}
+
+Player_init_shared :: proc() {
+  default_player_shared.animation = spa.load(sheetFilePath="assets/baad.png", frameWidth=90, frameHeight=55, rows=12, columns=2)
+
+  spa.add_animation(&default_player_shared.animation, "sailing", 5, 11)
+  spa.add_animation(&default_player_shared.animation, "start_sailing", 1, 5)
+}
+
+Player_deinit_shared :: proc() {
+  spa.unload(&default_player_shared.animation)
 }
 
 Player_update :: proc(p: ^Player) {

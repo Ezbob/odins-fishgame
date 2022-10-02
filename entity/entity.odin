@@ -35,3 +35,14 @@ render :: proc(e: ^Entity) {
       Player_render(v)
   }
 }
+
+
+init_shareds :: proc() {
+  Fish_init_shared()
+  Player_init_shared()
+}
+
+deinit_shareds :: proc() {
+  Fish_deinit_shared()
+  Player_deinit_shared()
+}

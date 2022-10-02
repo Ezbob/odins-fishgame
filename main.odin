@@ -12,33 +12,30 @@ import "control"
 main :: proc() {
   using raylib
 
-  fmt.println("Hello world!")
-
   shouldExit := false
-
   entities: [dynamic]entity.Entity
-
-  f := entity.new_entity(entity.Fish)
-  f.velocity.x = 10.0;
 
   InitWindow(800, 600, "example")
   defer CloseWindow()
 
-  sp := spa.load(sheetFilePath="assets/baad.png", frameWidth=90, frameHeight=55, rows=12, columns=2)
-  defer spa.unload(&sp)
+  entity.init_shareds()
+  defer entity.deinit_shareds()
 
-  spa.add_animation(&sp, "sailing", 5, 11)
-  spa.add_animation(&sp, "start_sailing", 1, 5)
+  f := entity.Fish_new(entity.Fish_Type.Cod)
+  f.color = WHITE
+  f.velocity.x = 10.0
 
-  player_shared := entity.Player_Shared {
-    animation = sp,
-    input = &control.DefaultKeyInputDevice,
-  }
+  f2 := entity.Fish_new(entity.Fish_Type.Puffer)
+  f2.color = WHITE
+  f2.velocity.x = 10.0
+  f2.position.x = 100
+  f2.position.y = 20
 
-  p := entity.new_entity(entity.Player)
-  p.shared = &player_shared
+  p := entity.Player_new(0)
 
   append(&entities, p)
+  append(&entities, f)
+  append(&entities, f2)
 
   SetTargetFPS(60)
 
