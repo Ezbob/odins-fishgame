@@ -31,6 +31,7 @@ Fish_Shared :: struct {
 	value:             i32,
 }
 
+
 Fish :: struct {
 	using entity:  Entity,
 	using movable: components.Movable,
@@ -91,6 +92,7 @@ Fish_update :: proc(f: ^Fish) {
 	if (!f.active) {
 		return
 	}
+
 
 	f.position += (f.velocity * rl.GetFrameTime())
 	f.velocity *= 0.99

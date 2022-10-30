@@ -10,6 +10,7 @@ Entity :: struct {
 @(private)
 next_id: u64 = 0
 
+// creates a new type from a type
 new_entity :: proc($T: typeid) -> ^T {
   e := new(T)
   e.variant = e

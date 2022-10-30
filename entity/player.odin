@@ -6,10 +6,17 @@ import "../components"
 import spa "../spritesheetanimation"
 import "../spritesheet"
 import "../control"
+import "core:math"
 
 Player_Shared :: struct {
   animation: spa.SpriteSheetAnimations,
   input: ^control.InputDevice,
+}
+
+Player_State :: enum {
+	STOPPED,
+	STOPPING,
+	SAILING,
 }
 
 Player :: struct {
@@ -17,6 +24,7 @@ Player :: struct {
   using movable: components.Movable,
   color: rl.Color,
   shared: ^Player_Shared,
+  state: Player_State,
   playerNumber: uint,
 }
 
@@ -28,7 +36,8 @@ Player_new :: proc(number: uint) -> ^Player {
   e := new_entity(Player)
   e.playerNumber = number
   e.shared = &default_player_shared
-	return e
+  e.state = Player_State.STOPPED
+  return e
 }
 
 Player_init_shared :: proc() {
@@ -53,6 +62,13 @@ Player_update :: proc(p: ^Player) {
     p.velocity.x = 30
   } else if (goingLeft && !goingRight) {
     p.velocity.x = -30
+  }
+  
+  #partial switch p.state {
+    case .SAILING:
+      if (math.abs(p.velocity.x) < 1.6e-05) {
+    	p.state = Player_State.STOPPING
+      }
   }
 }
 
